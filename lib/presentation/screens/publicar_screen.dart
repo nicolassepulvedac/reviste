@@ -6,6 +6,7 @@ import '../../core/constants.dart';
 import '../../core/theme.dart';
 import '../../core/ui.dart';
 import '../../domain/entities/prenda.dart';
+import '../providers/auth_provider.dart';
 import '../providers/prendas_provider.dart';
 import '../widgets/prenda_imagen.dart';
 
@@ -104,7 +105,7 @@ class _PublicarScreenState extends ConsumerState<PublicarScreen> {
       imagenUrl: _imagen.text.trim(),
       descripcion: _descripcion.text.trim(),
       marca: marca.isEmpty ? 'Sin marca' : marca,
-      vendedor: base?.vendedor ?? kUsuarioActual,
+      vendedor: base?.vendedor ?? ref.read(nombreUsuarioProvider),
     );
 
     try {

@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "208159735326",
+    "project_id": "reviste-1cbcb",
+    "storage_bucket": "reviste-1cbcb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:208159735326:android:653639305cdea63271380f",
+        "android_client_info": {
+          "package_name": "com.example.reviste"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyARRb7Km2jjzKYGi_gvmhzRUcE9pbRsOCA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

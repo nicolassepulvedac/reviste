@@ -2,18 +2,47 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../core/constants.dart';
 import '../../core/theme.dart';
 import '../../core/ui.dart';
+import '../providers/auth_provider.dart';
+import '../providers/carrito_provider.dart';
 import '../providers/filtros_provider.dart';
 
-/// Perfil del usuario con accesos a sus publicaciones.
+/// Perfil del usuario con accesos a sus publicaciones y cierre de sesión.
 class PerfilScreen extends ConsumerWidget {
   const PerfilScreen({super.key});
+
+  Future<void> _cerrarSesion(BuildContext context, WidgetRef ref) async {
+    final confirmar = await showDialog<bool>(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('Cerrar sesión'),
+        content: const Text('¿Quieres salir de tu cuenta?'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(false),
+            child: const Text('Cancelar'),
+          ),
+          TextButton(
+            onPressed: () => Navigator.of(ctx).pop(true),
+            child: const Text('Salir'),
+          ),
+        ],
+      ),
+    );
+    if (confirmar != true) return;
+    // El carrito es de cada persona: se limpia antes de salir.
+    ref.read(carritoProvider.notifier).vaciar();
+    ref.read(tabIndexProvider.notifier).ir(0);
+    await ref.read(authServiceProvider).cerrarSesion();
+    // El router detecta que no hay sesión y vuelve al login.
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final publicadas = ref.watch(misPublicacionesProvider).length;
+    final nombre = ref.watch(nombreUsuarioProvider);
+    final correo = ref.watch(correoUsuarioProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -23,24 +52,28 @@ class PerfilScreen extends ConsumerWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Row(
+              Row(
                 children: [
-                  Icon(Icons.person_outline, size: 52),
-                  SizedBox(width: 14),
+                  const Icon(Icons.person_outline, size: 52),
+                  const SizedBox(width: 14),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          kUsuarioActual,
-                          style: TextStyle(
+                          nombre,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
                             fontSize: 20,
                             fontWeight: FontWeight.w800,
                           ),
                         ),
                         Text(
-                          'Miembro desde Septiembre 2026',
-                          style: TextStyle(color: kGrisTexto),
+                          correo,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(color: kGrisTexto),
                         ),
                       ],
                     ),
@@ -80,10 +113,7 @@ class PerfilScreen extends ConsumerWidget {
                 icono: Icons.logout,
                 titulo: 'Cerrar sesión',
                 subtitulo: 'Salir de ReViste',
-                onTap: () => mostrarMensaje(
-                  context,
-                  'Disponible cuando se conecte el login con Firebase',
-                ),
+                onTap: () => _cerrarSesion(context, ref),
               ),
             ],
           ),

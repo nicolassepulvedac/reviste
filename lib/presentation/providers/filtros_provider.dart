@@ -1,7 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../core/constants.dart';
 import '../../domain/entities/prenda.dart';
+import 'auth_provider.dart';
 import 'prendas_provider.dart';
 
 /// Categoría seleccionada en Explorar ("Todo" = sin filtro).
@@ -70,8 +70,9 @@ final prendasFiltradasProvider =
   });
 });
 
-/// Prendas publicadas por el usuario actual.
+/// Prendas publicadas por el usuario con sesión iniciada.
 final misPublicacionesProvider = Provider<List<Prenda>>((ref) {
   final lista = ref.watch(prendasProvider).value ?? <Prenda>[];
-  return lista.where((p) => p.vendedor == kUsuarioActual).toList();
+  final nombre = ref.watch(nombreUsuarioProvider);
+  return lista.where((p) => p.vendedor == nombre).toList();
 });
