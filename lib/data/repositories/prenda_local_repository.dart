@@ -4,7 +4,7 @@ import 'prenda_repository.dart';
 /// Implementación en memoria con prendas de ejemplo.
 /// Simula la latencia de una API para poder ver el estado de carga.
 class PrendaLocalRepository implements PrendaRepository {
-  final List<Prenda> _prendas = [..._prendasEjemplo];
+  final List<Prenda> _prendas = [...prendasEjemplo];
 
   @override
   Future<List<Prenda>> obtenerPrendas() async {
@@ -33,7 +33,8 @@ class PrendaLocalRepository implements PrendaRepository {
   }
 }
 
-const List<Prenda> _prendasEjemplo = [
+/// Prendas de ejemplo (también se usan para cargar Firestore la primera vez).
+const List<Prenda> prendasEjemplo = [
   Prenda(
     id: '1',
     nombre: 'Chaqueta de Cuero',

@@ -1,14 +1,15 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../data/repositories/prenda_local_repository.dart';
+import '../../data/repositories/prenda_firestore_repository.dart';
 import '../../data/repositories/prenda_repository.dart';
 import '../../domain/entities/carrito_item.dart';
 import '../../domain/entities/prenda.dart';
 import 'carrito_provider.dart';
 
-/// Repositorio de prendas. Para usar Firestore después, solo se cambia aquí.
+/// Repositorio de prendas (v0.4: Cloud Firestore).
+/// Para volver a los datos locales basta con devolver PrendaLocalRepository().
 final prendaRepositoryProvider = Provider<PrendaRepository>((ref) {
-  return PrendaLocalRepository();
+  return PrendaFirestoreRepository();
 });
 
 /// Lista de prendas (con estados de carga y error) + operaciones CRUD.

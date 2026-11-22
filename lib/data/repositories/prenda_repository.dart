@@ -2,8 +2,8 @@ import '../../domain/entities/prenda.dart';
 
 /// Contrato de acceso a datos de prendas.
 ///
-/// Hoy lo implementa [PrendaLocalRepository] (datos en memoria). Más adelante
-/// se agrega una implementación con Firestore y solo se cambia el provider.
+/// Lo implementan [PrendaFirestoreRepository] (v0.4, el que usa la app) y
+/// [PrendaLocalRepository] (datos en memoria). Se elige en el provider.
 abstract class PrendaRepository {
   Future<List<Prenda>> obtenerPrendas();
   Future<Prenda> crearPrenda(Prenda prenda);
