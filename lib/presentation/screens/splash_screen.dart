@@ -21,17 +21,14 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   Future<void> _iniciar() async {
-    debugPrint('[ReViste] splash: inicio');
     try {
       await Future.wait<Object?>([
         ref.read(prendasProvider.future),
         Future<void>.delayed(const Duration(milliseconds: 1500)),
       ]).timeout(const Duration(seconds: 8)); // nunca quedarse cargando
-    } catch (e) {
-      debugPrint('[ReViste] splash: la carga falló ($e)');
+    } catch (_) {
       // Si falla la carga, Explorar mostrará el error con opción de reintentar.
     }
-    debugPrint('[ReViste] splash: terminó, mounted=$mounted');
     if (!mounted) return;
     context.go('/');
   }

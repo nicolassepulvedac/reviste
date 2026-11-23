@@ -18,3 +18,4 @@ samples, guidance on mobile development, and a full API reference.
 
 
 testeo@gmail.com test123
+admin@reviste.cl Admin1234

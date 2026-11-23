@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/prenda.dart';
 import 'auth_provider.dart';
 import 'prendas_provider.dart';
+import 'rol_provider.dart';
 
 /// Categoría seleccionada en Explorar ("Todo" = sin filtro).
 class CategoriaNotifier extends Notifier<String> {
@@ -70,9 +71,19 @@ final prendasFiltradasProvider =
   });
 });
 
-/// Prendas publicadas por el usuario con sesión iniciada.
+/// Prendas publicadas por la cuenta con sesión iniciada (por id de cuenta).
 final misPublicacionesProvider = Provider<List<Prenda>>((ref) {
   final lista = ref.watch(prendasProvider).value ?? <Prenda>[];
-  final nombre = ref.watch(nombreUsuarioProvider);
-  return lista.where((p) => p.vendedor == nombre).toList();
+  final uid = ref.watch(uidUsuarioProvider);
+  if (uid == null) return <Prenda>[];
+  return lista.where((p) => p.vendedorUid == uid).toList();
+});
+
+/// Prendas que la cuenta puede editar y eliminar: todas si es administradora,
+/// solo las propias si es usuario.
+final prendasGestionablesProvider = Provider<List<Prenda>>((ref) {
+  if (ref.watch(esAdminProvider)) {
+    return ref.watch(prendasProvider).value ?? <Prenda>[];
+  }
+  return ref.watch(misPublicacionesProvider);
 });

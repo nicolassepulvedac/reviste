@@ -29,7 +29,11 @@ class PrendaFirestoreRepository implements PrendaRepository {
 
   /// Datos que se guardan en Firestore (el id es el del documento).
   Map<String, dynamic> _aDatos(Prenda prenda) {
-    return Map<String, dynamic>.from(prenda.toMap())..remove('id');
+    final datos = Map<String, dynamic>.from(prenda.toMap())..remove('id');
+    // Las prendas de ejemplo no tienen dueña: no se escribe un campo vacío
+    // (así comprar solo modifica el stock, como exigen las reglas).
+    if (prenda.vendedorUid.isEmpty) datos.remove('vendedorUid');
+    return datos;
   }
 
   Prenda _aPrenda(QueryDocumentSnapshot<Map<String, dynamic>> doc) {
@@ -38,7 +42,12 @@ class PrendaFirestoreRepository implements PrendaRepository {
 
   @override
   Future<List<Prenda>> obtenerPrendas() async {
-    await _cargarEjemplosSiHaceFalta();
+    try {
+      await _cargarEjemplosSiHaceFalta();
+    } catch (_) {
+      // Solo un administrador puede cargar los ejemplos (reglas de Firestore).
+      // Si no hay permiso, se sigue y se leen las prendas que ya existan.
+    }
     final consulta = await _coleccion.get().timeout(_limite);
 
     // Las más nuevas primero (las que no tienen fecha quedan al final).

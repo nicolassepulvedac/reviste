@@ -1,0 +1,51 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // true si la cuenta tiene rol "admin" en usuarios/{uid}.
+    // El rol se asigna a mano en la consola de Firebase.
+    function esAdmin() {
+      return request.auth != null &&
+        get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data.rol == 'admin';
+    }
+
+    // Perfil y rol de cada cuenta.
+    match /usuarios/{uid} {
+      allow read: if request.auth != null && (request.auth.uid == uid || esAdmin());
+      // Cada cuenta crea su propio perfil y siempre parte como "usuario".
+      allow create: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.rol == 'usuario';
+      // Nadie puede cambiar su propio rol desde la app.
+      allow update: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.rol == resource.data.rol;
+      allow delete: if false;
+    }
+
+    // Prendas.
+    match /prendas/{prendaId} {
+      allow read: if request.auth != null;
+
+      // Cada cuenta publica prendas a su nombre (o un admin).
+      allow create: if request.auth != null &&
+        (request.resource.data.vendedorUid == request.auth.uid || esAdmin());
+
+      // Editar o eliminar: la dueña de la prenda o un admin.
+      // Al comprar, cualquier cuenta puede bajar solo el campo "stock".
+      allow update: if request.auth != null && (
+        resource.data.get('vendedorUid', '') == request.auth.uid
+        || esAdmin()
+        || (request.resource.data.diff(resource.data).affectedKeys().hasOnly(['stock'])
+            && request.resource.data.stock >= 0
+            && request.resource.data.stock <= resource.data.stock)
+      );
+      allow delete: if request.auth != null &&
+        (resource.data.get('vendedorUid', '') == request.auth.uid || esAdmin());
+    }
+
+    // Marca de que los datos de ejemplo ya se cargaron.
+    match /config/{doc} {
+      allow read: if request.auth != null;
+      allow write: if esAdmin();
+    }
+  }
+}

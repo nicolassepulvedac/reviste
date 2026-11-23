@@ -106,6 +106,8 @@ class _PublicarScreenState extends ConsumerState<PublicarScreen> {
       descripcion: _descripcion.text.trim(),
       marca: marca.isEmpty ? 'Sin marca' : marca,
       vendedor: base?.vendedor ?? ref.read(nombreUsuarioProvider),
+      // Al editar se conserva la dueña original (también si edita un admin).
+      vendedorUid: base?.vendedorUid ?? ref.read(uidUsuarioProvider) ?? '',
     );
 
     try {

@@ -4,6 +4,7 @@ import '../../data/repositories/prenda_firestore_repository.dart';
 import '../../data/repositories/prenda_repository.dart';
 import '../../domain/entities/carrito_item.dart';
 import '../../domain/entities/prenda.dart';
+import 'auth_provider.dart';
 import 'carrito_provider.dart';
 
 /// Repositorio de prendas (v0.4: Cloud Firestore).
@@ -18,8 +19,14 @@ class PrendasNotifier extends AsyncNotifier<List<Prenda>> {
 
   List<Prenda> get _actuales => state.value ?? <Prenda>[];
 
+  /// Las reglas de Firestore exigen sesión: sin usuario no se consulta nada
+  /// (lista vacía) y al iniciar o cerrar sesión la lista se vuelve a cargar.
   @override
-  Future<List<Prenda>> build() => _repo.obtenerPrendas();
+  Future<List<Prenda>> build() async {
+    final uid = ref.watch(uidUsuarioProvider);
+    if (uid == null) return <Prenda>[];
+    return _repo.obtenerPrendas();
+  }
 
   /// CREATE
   Future<void> crear(Prenda prenda) async {
@@ -63,5 +70,10 @@ class PrendasNotifier extends AsyncNotifier<List<Prenda>> {
   }
 }
 
-final prendasProvider =
-    AsyncNotifierProvider<PrendasNotifier, List<Prenda>>(PrendasNotifier.new);
+final prendasProvider = AsyncNotifierProvider<PrendasNotifier, List<Prenda>>(
+  PrendasNotifier.new,
+  // Riverpod 3 reintenta solo los providers que fallan, lo que dejaba la
+  // carga girando mucho rato. Se desactiva: el error se muestra de inmediato
+  // y el botón "Reintentar" de Explorar vuelve a cargar.
+  retry: (reintentos, error) => null,
+);

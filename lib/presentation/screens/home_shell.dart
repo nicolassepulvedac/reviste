@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/theme.dart';
 import '../providers/carrito_provider.dart';
 import '../providers/filtros_provider.dart';
+import '../providers/rol_provider.dart';
 import 'carrito_screen.dart';
 import 'explorar_screen.dart';
 import 'perfil_screen.dart';
@@ -17,6 +18,8 @@ class HomeShell extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final indice = ref.watch(tabIndexProvider);
     final cantidad = ref.watch(carritoCantidadProvider);
+    // Mantiene activo el rol (y crea el perfil en el primer ingreso).
+    ref.watch(rolProvider);
 
     return Scaffold(
       body: IndexedStack(

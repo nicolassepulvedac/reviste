@@ -3,21 +3,30 @@ import 'package:flutter/material.dart';
 import 'theme.dart';
 
 /// Muestra un SnackBar (feedback visual) reemplazando el anterior.
+/// Se cierra solo a los 3 segundos.
 void mostrarMensaje(BuildContext context, String mensaje,
     {SnackBarAction? accion}) {
+  const duracion = Duration(seconds: 3);
   final messenger = ScaffoldMessenger.of(context);
   messenger.hideCurrentSnackBar();
-  messenger.showSnackBar(
+  final controlador = messenger.showSnackBar(
     SnackBar(
       content: Text(mensaje),
       behavior: SnackBarBehavior.floating,
-      duration: const Duration(seconds: 3),
-      // Desde Flutter 3.29 un SnackBar con acción no se cierra solo salvo
-      // que se indique persist: false.
+      duration: duracion,
       persist: false,
       action: accion,
     ),
   );
+
+  // Un SnackBar con acción ("Ver carrito") puede quedarse fijo (por ejemplo
+  // si el dispositivo tiene opciones de accesibilidad activas), así que se
+  // cierra con un temporizador propio.
+  var cerrado = false;
+  controlador.closed.then((_) => cerrado = true);
+  Future<void>.delayed(duracion, () {
+    if (!cerrado) messenger.hideCurrentSnackBar();
+  });
 }
 
 /// AppBar con el estilo de ReViste (crema, sin sombra).

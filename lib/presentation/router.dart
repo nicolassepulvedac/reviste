@@ -37,9 +37,6 @@ final GoRouter appRouter = GoRouter(
   refreshListenable: _SesionListenable(),
   redirect: (context, state) {
     final ruta = state.matchedLocation;
-    debugPrint(
-      '[ReViste] ruta $ruta, sesión: ${FirebaseAuth.instance.currentUser != null}',
-    );
     if (ruta == '/splash') return null;
 
     final conSesion = FirebaseAuth.instance.currentUser != null;

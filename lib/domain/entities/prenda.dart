@@ -10,7 +10,8 @@ class Prenda {
   final String imagenUrl;
   final String descripcion;
   final String marca;
-  final String vendedor;
+  final String vendedor; // nombre para mostrar
+  final String vendedorUid; // id de la cuenta dueña ('' en prendas de ejemplo)
 
   const Prenda({
     required this.id,
@@ -24,6 +25,7 @@ class Prenda {
     required this.descripcion,
     required this.marca,
     required this.vendedor,
+    this.vendedorUid = '',
   });
 
   bool get agotada => stock < 1;
@@ -40,6 +42,7 @@ class Prenda {
     String? descripcion,
     String? marca,
     String? vendedor,
+    String? vendedorUid,
   }) {
     return Prenda(
       id: id ?? this.id,
@@ -53,6 +56,7 @@ class Prenda {
       descripcion: descripcion ?? this.descripcion,
       marca: marca ?? this.marca,
       vendedor: vendedor ?? this.vendedor,
+      vendedorUid: vendedorUid ?? this.vendedorUid,
     );
   }
 
@@ -69,6 +73,7 @@ class Prenda {
       'descripcion': descripcion,
       'marca': marca,
       'vendedor': vendedor,
+      'vendedorUid': vendedorUid,
     };
   }
 
@@ -85,6 +90,7 @@ class Prenda {
       descripcion: (map['descripcion'] ?? '') as String,
       marca: (map['marca'] ?? 'Sin marca') as String,
       vendedor: (map['vendedor'] ?? '') as String,
+      vendedorUid: (map['vendedorUid'] ?? '') as String,
     );
   }
 }

@@ -7,6 +7,7 @@ import '../../core/ui.dart';
 import '../providers/auth_provider.dart';
 import '../providers/carrito_provider.dart';
 import '../providers/filtros_provider.dart';
+import '../providers/rol_provider.dart';
 
 /// Perfil del usuario con accesos a sus publicaciones y cierre de sesión.
 class PerfilScreen extends ConsumerWidget {
@@ -43,6 +44,7 @@ class PerfilScreen extends ConsumerWidget {
     final publicadas = ref.watch(misPublicacionesProvider).length;
     final nombre = ref.watch(nombreUsuarioProvider);
     final correo = ref.watch(correoUsuarioProvider);
+    final esAdmin = ref.watch(esAdminProvider);
 
     return Scaffold(
       body: SafeArea(
@@ -75,6 +77,26 @@ class PerfilScreen extends ConsumerWidget {
                           overflow: TextOverflow.ellipsis,
                           style: const TextStyle(color: kGrisTexto),
                         ),
+                        if (esAdmin)
+                          Container(
+                            margin: const EdgeInsets.only(top: 6),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 8,
+                              vertical: 3,
+                            ),
+                            decoration: BoxDecoration(
+                              color: kVerdeClaro,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            child: const Text(
+                              'Administrador',
+                              style: TextStyle(
+                                color: kVerde,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
                       ],
                     ),
                   ),
@@ -93,8 +115,10 @@ class PerfilScreen extends ConsumerWidget {
               ),
               _OpcionMenu(
                 icono: Icons.checkroom_outlined,
-                titulo: 'Mis publicaciones',
-                subtitulo: '$publicadas prendas listadas',
+                titulo: esAdmin ? 'Gestionar publicaciones' : 'Mis publicaciones',
+                subtitulo: esAdmin
+                    ? 'Todas las prendas (administrador)'
+                    : '$publicadas prendas listadas',
                 onTap: () => context.push('/mis-publicaciones'),
               ),
               _OpcionMenu(

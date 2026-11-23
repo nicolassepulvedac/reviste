@@ -15,6 +15,12 @@ User? _usuarioActual(Ref ref) {
       ref.read(authServiceProvider).usuarioActual;
 }
 
+/// Id del usuario con sesión (null si no hay). Solo avisa cuando cambia la
+/// persona, no cuando se actualiza su perfil.
+final uidUsuarioProvider = Provider<String?>((ref) {
+  return _usuarioActual(ref)?.uid;
+});
+
 /// Nombre para mostrar: el nombre registrado, o el correo antes de la @.
 final nombreUsuarioProvider = Provider<String>((ref) {
   final usuario = _usuarioActual(ref);

@@ -8,9 +8,11 @@ import '../../core/ui.dart';
 import '../../domain/entities/prenda.dart';
 import '../providers/filtros_provider.dart';
 import '../providers/prendas_provider.dart';
+import '../providers/rol_provider.dart';
 import '../widgets/prenda_imagen.dart';
 
-/// Lista de las prendas del usuario con editar (UPDATE) y eliminar (DELETE).
+/// Lista de las prendas que la cuenta puede gestionar, con editar (UPDATE) y
+/// eliminar (DELETE): las propias si es usuario, todas si es administradora.
 class MisPublicacionesScreen extends ConsumerWidget {
   const MisPublicacionesScreen({super.key});
 
@@ -44,15 +46,18 @@ class MisPublicacionesScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final prendas = ref.watch(misPublicacionesProvider);
+    final prendas = ref.watch(prendasGestionablesProvider);
+    final esAdmin = ref.watch(esAdminProvider);
 
     return Scaffold(
-      appBar: buildAppBar('Mis publicaciones'),
+      appBar: buildAppBar(
+        esAdmin ? 'Todas las publicaciones' : 'Mis publicaciones',
+      ),
       body: prendas.isEmpty
-          ? const Center(
+          ? Center(
               child: Text(
-                'Aún no has publicado prendas',
-                style: TextStyle(color: kGrisTexto),
+                esAdmin ? 'No hay prendas publicadas' : 'Aún no has publicado prendas',
+                style: const TextStyle(color: kGrisTexto),
               ),
             )
           : ListView.separated(
@@ -61,6 +66,7 @@ class MisPublicacionesScreen extends ConsumerWidget {
               separatorBuilder: (context, i) => const SizedBox(height: 12),
               itemBuilder: (context, i) {
                 final p = prendas[i];
+                final stockTexto = p.agotada ? 'Agotada' : 'Stock: ${p.stock}';
                 return Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
@@ -95,7 +101,9 @@ class MisPublicacionesScreen extends ConsumerWidget {
                               ),
                             ),
                             Text(
-                              p.agotada ? 'Agotada' : 'Stock: ${p.stock}',
+                              esAdmin
+                                  ? '$stockTexto • ${p.vendedor}'
+                                  : stockTexto,
                               style: const TextStyle(
                                 color: kGrisTexto,
                                 fontSize: 12,
