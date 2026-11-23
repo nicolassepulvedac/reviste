@@ -36,9 +36,9 @@ class HomeShell extends ConsumerWidget {
         ),
         child: NavigationBar(
           selectedIndex: indice,
-          backgroundColor: Colors.white,
+          backgroundColor: kCrema,
           surfaceTintColor: Colors.transparent,
-          indicatorColor: kGrisFondo,
+          indicatorColor: kVerdeClaro,
           onDestinationSelected: (i) =>
               ref.read(tabIndexProvider.notifier).ir(i),
           destinations: [

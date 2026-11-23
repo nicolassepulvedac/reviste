@@ -22,7 +22,7 @@ class PrendaImagen extends StatelessWidget {
 
   Widget _placeholder() {
     return Center(
-      child: Icon(Icons.image_outlined, size: iconSize, color: kNegro),
+      child: Icon(Icons.image_outlined, size: iconSize, color: kVerde.withValues(alpha: 0.55)),
     );
   }
 

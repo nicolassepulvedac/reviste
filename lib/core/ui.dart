@@ -11,19 +11,23 @@ void mostrarMensaje(BuildContext context, String mensaje,
     SnackBar(
       content: Text(mensaje),
       behavior: SnackBarBehavior.floating,
+      duration: const Duration(seconds: 3),
+      // Desde Flutter 3.29 un SnackBar con acción no se cierra solo salvo
+      // que se indique persist: false.
+      persist: false,
       action: accion,
     ),
   );
 }
 
-/// AppBar con el estilo de ReViste (blanco, sin sombra).
+/// AppBar con el estilo de ReViste (crema, sin sombra).
 AppBar buildAppBar(String titulo, {List<Widget>? actions}) {
   return AppBar(
     title: Text(
       titulo,
       style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 18),
     ),
-    backgroundColor: Colors.white,
+    backgroundColor: kCrema,
     foregroundColor: kNegro,
     elevation: 0,
     scrolledUnderElevation: 0,
@@ -48,7 +52,7 @@ InputDecoration campoDeco(String label, {String? hint, Widget? prefixIcon}) {
     contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
     border: borde(kBorde),
     enabledBorder: borde(kBorde),
-    focusedBorder: borde(kNegro, 1.5),
+    focusedBorder: borde(kVerde, 1.5),
     errorBorder: borde(const Color(0xFFB3261E)),
     focusedErrorBorder: borde(const Color(0xFFB3261E), 1.5),
   );

@@ -190,7 +190,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                     Container(
                       padding: const EdgeInsets.all(14),
                       decoration: BoxDecoration(
-                        border: Border.all(color: kNegro, width: 1.5),
+                        border: Border.all(color: kVerde, width: 1.5),
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: const Row(
@@ -198,7 +198,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
                           Icon(Icons.credit_card),
                           SizedBox(width: 10),
                           Expanded(child: Text('Visa terminada en •••• 4820')),
-                          Icon(Icons.check_circle_outline),
+                          Icon(Icons.check_circle, color: kVerde),
                         ],
                       ),
                     ),

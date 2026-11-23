@@ -11,16 +11,18 @@ class EstadoBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final (fondo, letra) =
+        agotada ? (kGrisTexto, Colors.white) : coloresEstado(texto);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
-        color: agotada ? kGrisTexto : kNegro,
+        color: fondo,
         borderRadius: BorderRadius.circular(6),
       ),
       child: Text(
         agotada ? 'Agotada' : texto,
-        style: const TextStyle(
-          color: Colors.white,
+        style: TextStyle(
+          color: letra,
           fontSize: 11,
           fontWeight: FontWeight.w600,
         ),

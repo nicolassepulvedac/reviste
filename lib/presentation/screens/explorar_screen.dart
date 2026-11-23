@@ -66,7 +66,7 @@ class ExplorarScreen extends ConsumerWidget {
                         label: Text(filtro),
                         selected: categoria == filtro,
                         showCheckmark: false,
-                        selectedColor: kNegro,
+                        selectedColor: kVerde,
                         backgroundColor: Colors.white,
                         side: const BorderSide(color: kBorde),
                         shape: const StadiumBorder(),

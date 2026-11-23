@@ -21,14 +21,17 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
   }
 
   Future<void> _iniciar() async {
+    debugPrint('[ReViste] splash: inicio');
     try {
       await Future.wait<Object?>([
         ref.read(prendasProvider.future),
         Future<void>.delayed(const Duration(milliseconds: 1500)),
-      ]);
-    } catch (_) {
+      ]).timeout(const Duration(seconds: 8)); // nunca quedarse cargando
+    } catch (e) {
+      debugPrint('[ReViste] splash: la carga falló ($e)');
       // Si falla la carga, Explorar mostrará el error con opción de reintentar.
     }
+    debugPrint('[ReViste] splash: terminó, mounted=$mounted');
     if (!mounted) return;
     context.go('/');
   }
@@ -40,7 +43,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.recycling, size: 56, color: kNegro),
+            Icon(Icons.recycling, size: 56, color: kVerde),
             SizedBox(height: 16),
             Text(
               'ReViste',
@@ -52,7 +55,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
             SizedBox(
               width: 24,
               height: 24,
-              child: CircularProgressIndicator(strokeWidth: 2.5, color: kNegro),
+              child: CircularProgressIndicator(strokeWidth: 2.5, color: kVerde),
             ),
           ],
         ),

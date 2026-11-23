@@ -55,7 +55,7 @@ class PrendaCard extends ConsumerWidget {
                           child: Icon(
                             esFavorita ? Icons.favorite : Icons.favorite_border,
                             size: 18,
-                            color: kNegro,
+                            color: esFavorita ? kCoral : kNegro,
                           ),
                         ),
                       ),

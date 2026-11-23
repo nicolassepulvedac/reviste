@@ -263,7 +263,7 @@ class _PublicarScreenState extends ConsumerState<PublicarScreen> {
                             label: Text(e),
                             selected: _estado == e,
                             showCheckmark: false,
-                            selectedColor: kNegro,
+                            selectedColor: kVerde,
                             backgroundColor: Colors.white,
                             side: const BorderSide(color: kBorde),
                             shape: const StadiumBorder(),

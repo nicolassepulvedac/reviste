@@ -62,7 +62,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Icon(Icons.recycling, size: 52, color: kNegro),
+                  const Icon(Icons.recycling, size: 52, color: kVerde),
                   const SizedBox(height: 12),
                   const Text(
                     'ReViste',
