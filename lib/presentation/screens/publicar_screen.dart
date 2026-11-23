@@ -36,6 +36,9 @@ class _PublicarScreenState extends ConsumerState<PublicarScreen> {
   String _estado = kEstados.first;
   Prenda? _editando;
   bool _guardando = false;
+  // Id de la prenda nueva: se reutiliza si hay que reintentar (sin internet),
+  // así un reintento no crea una prenda duplicada.
+  String? _idNuevo;
 
   @override
   void initState() {
@@ -95,7 +98,7 @@ class _PublicarScreenState extends ConsumerState<PublicarScreen> {
     final base = _editando;
     final marca = _marca.text.trim();
     final prenda = Prenda(
-      id: base?.id ?? '',
+      id: base?.id ?? (_idNuevo ??= DateTime.now().microsecondsSinceEpoch.toString()),
       nombre: _titulo.text.trim(),
       precio: int.parse(_precio.text.trim()),
       talla: _talla.text.trim(),
@@ -122,7 +125,10 @@ class _PublicarScreenState extends ConsumerState<PublicarScreen> {
         context,
         base == null ? 'Prenda publicada con éxito' : 'Cambios guardados',
       );
-      if (base == null) _limpiar();
+      if (base == null) {
+        _idNuevo = null;
+        _limpiar();
+      }
       setState(() => _guardando = false);
       widget.onGuardado?.call();
     } catch (_) {

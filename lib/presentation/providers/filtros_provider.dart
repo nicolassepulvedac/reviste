@@ -38,21 +38,6 @@ class TabIndexNotifier extends Notifier<int> {
 final tabIndexProvider =
     NotifierProvider<TabIndexNotifier, int>(TabIndexNotifier.new);
 
-/// Ids de prendas marcadas como favoritas (en memoria).
-class FavoritosNotifier extends Notifier<Set<String>> {
-  @override
-  Set<String> build() => <String>{};
-
-  void alternar(String id) {
-    final nuevo = {...state};
-    if (!nuevo.remove(id)) nuevo.add(id);
-    state = nuevo;
-  }
-}
-
-final favoritosProvider =
-    NotifierProvider<FavoritosNotifier, Set<String>>(FavoritosNotifier.new);
-
 /// Prendas filtradas por categoría y búsqueda (conserva loading/error).
 final prendasFiltradasProvider =
     Provider<AsyncValue<List<Prenda>>>((ref) {

@@ -5,7 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../../core/format.dart';
 import '../../core/theme.dart';
 import '../../domain/entities/prenda.dart';
-import '../providers/filtros_provider.dart';
+import '../providers/favoritos_provider.dart';
 import 'estado_badge.dart';
 import 'prenda_imagen.dart';
 

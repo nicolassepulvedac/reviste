@@ -6,7 +6,9 @@ import '../../core/theme.dart';
 import '../../core/ui.dart';
 import '../providers/auth_provider.dart';
 import '../providers/carrito_provider.dart';
+import '../providers/favoritos_provider.dart';
 import '../providers/filtros_provider.dart';
+import '../providers/pedidos_provider.dart';
 import '../providers/rol_provider.dart';
 
 /// Perfil del usuario con accesos a sus publicaciones y cierre de sesión.
@@ -45,6 +47,8 @@ class PerfilScreen extends ConsumerWidget {
     final nombre = ref.watch(nombreUsuarioProvider);
     final correo = ref.watch(correoUsuarioProvider);
     final esAdmin = ref.watch(esAdminProvider);
+    final favoritos = ref.watch(prendasFavoritasProvider).length;
+    final compras = ref.watch(pedidosProvider).value?.length;
 
     return Scaffold(
       body: SafeArea(
@@ -106,7 +110,13 @@ class PerfilScreen extends ConsumerWidget {
               Row(
                 children: [
                   Expanded(child: _Dato('$publicadas', 'Publicadas')),
-                  const Expanded(child: _Dato('4.8', 'Valoración')),
+                  Expanded(
+                    child: _Dato(
+                      '$favoritos',
+                      'Favoritos',
+                      onTap: () => context.push('/favoritos'),
+                    ),
+                  ),
                 ],
               ),
               const Padding(
@@ -122,10 +132,22 @@ class PerfilScreen extends ConsumerWidget {
                 onTap: () => context.push('/mis-publicaciones'),
               ),
               _OpcionMenu(
+                icono: Icons.favorite_border,
+                titulo: 'Mis favoritos',
+                subtitulo: favoritos == 1
+                    ? '1 prenda guardada'
+                    : '$favoritos prendas guardadas',
+                onTap: () => context.push('/favoritos'),
+              ),
+              _OpcionMenu(
                 icono: Icons.shopping_bag_outlined,
                 titulo: 'Mis compras',
-                subtitulo: 'Historial y seguimiento',
-                onTap: () => mostrarMensaje(context, 'Próximamente'),
+                subtitulo: compras == null
+                    ? 'Historial de pedidos'
+                    : compras == 1
+                        ? '1 pedido realizado'
+                        : '$compras pedidos realizados',
+                onTap: () => context.push('/mis-compras'),
               ),
               _OpcionMenu(
                 icono: Icons.settings_outlined,
@@ -150,19 +172,30 @@ class PerfilScreen extends ConsumerWidget {
 class _Dato extends StatelessWidget {
   final String valor;
   final String etiqueta;
+  final VoidCallback? onTap;
 
-  const _Dato(this.valor, this.etiqueta);
+  const _Dato(this.valor, this.etiqueta, {this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Text(
-          valor,
-          style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(10),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 4),
+        child: Column(
+          children: [
+            Text(
+              valor,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w800),
+            ),
+            Text(
+              etiqueta,
+              style: const TextStyle(color: kGrisTexto, fontSize: 12),
+            ),
+          ],
         ),
-        Text(etiqueta, style: const TextStyle(color: kGrisTexto, fontSize: 12)),
-      ],
+      ),
     );
   }
 }

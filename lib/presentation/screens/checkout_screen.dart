@@ -8,6 +8,7 @@ import '../../core/theme.dart';
 import '../../core/ui.dart';
 import '../providers/carrito_provider.dart';
 import '../providers/filtros_provider.dart';
+import '../providers/pedidos_provider.dart';
 import '../providers/prendas_provider.dart';
 
 /// Resumen de compra con formulario de envío validado.
@@ -47,6 +48,7 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     }
     setState(() => _enviando = true);
     final items = ref.read(carritoProvider);
+    final total = ref.read(carritoTotalProvider);
     final nombre = _nombre.text.trim();
     final direccion = _direccion.text.trim();
     final ciudad = _ciudad.text.trim();
@@ -54,6 +56,20 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
     try {
       await ref.read(prendasProvider.notifier).comprar(items);
       ref.read(carritoProvider.notifier).vaciar();
+      // El stock ya se descontó: si falla guardar el historial no se repite
+      // la compra, solo se avisa.
+      var historialGuardado = true;
+      try {
+        await ref.read(pedidosProvider.notifier).registrar(
+              items: items,
+              total: total,
+              nombre: nombre,
+              direccion: direccion,
+              ciudad: ciudad,
+            );
+      } catch (_) {
+        historialGuardado = false;
+      }
       if (!mounted) return;
       await showDialog<void>(
         context: context,
@@ -61,7 +77,8 @@ class _CheckoutScreenState extends ConsumerState<CheckoutScreen> {
         builder: (ctx) => AlertDialog(
           title: const Text('¡Pedido confirmado!'),
           content: Text(
-            'Gracias, $nombre. Enviaremos tu pedido a $direccion, $ciudad.',
+            'Gracias, $nombre. Enviaremos tu pedido a $direccion, $ciudad.'
+            '${historialGuardado ? '' : '\n\nNo pudimos guardarlo en "Mis compras".'}',
           ),
           actions: [
             TextButton(

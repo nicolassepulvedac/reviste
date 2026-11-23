@@ -24,3 +24,5 @@ class ReViste extends StatelessWidget {
     );
   }
 }
+//testeo@gmail.com  test123
+//admin@reviste.cl Admin1234

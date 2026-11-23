@@ -6,8 +6,10 @@ import 'package:go_router/go_router.dart';
 
 import 'screens/checkout_screen.dart';
 import 'screens/detalle_screen.dart';
+import 'screens/favoritos_screen.dart';
 import 'screens/home_shell.dart';
 import 'screens/login_screen.dart';
+import 'screens/mis_compras_screen.dart';
 import 'screens/mis_publicaciones_screen.dart';
 import 'screens/publicar_screen.dart';
 import 'screens/registro_screen.dart';
@@ -75,6 +77,14 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/mis-publicaciones',
       builder: (context, state) => const MisPublicacionesScreen(),
+    ),
+    GoRoute(
+      path: '/favoritos',
+      builder: (context, state) => const FavoritosScreen(),
+    ),
+    GoRoute(
+      path: '/mis-compras',
+      builder: (context, state) => const MisComprasScreen(),
     ),
     GoRoute(
       path: '/editar/:id',

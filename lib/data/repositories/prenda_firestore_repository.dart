@@ -64,7 +64,8 @@ class PrendaFirestoreRepository implements PrendaRepository {
 
   @override
   Future<Prenda> crearPrenda(Prenda prenda) async {
-    final doc = _coleccion.doc();
+    // Si la prenda ya trae id (reintento de una publicación) se reutiliza.
+    final doc = prenda.id.isEmpty ? _coleccion.doc() : _coleccion.doc(prenda.id);
     await doc
         .set({..._aDatos(prenda), 'creadaEn': FieldValue.serverTimestamp()})
         .timeout(_limite);

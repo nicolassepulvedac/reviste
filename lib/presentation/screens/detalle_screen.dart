@@ -6,6 +6,7 @@ import '../../core/format.dart';
 import '../../core/theme.dart';
 import '../../core/ui.dart';
 import '../providers/carrito_provider.dart';
+import '../providers/favoritos_provider.dart';
 import '../providers/filtros_provider.dart';
 import '../providers/prendas_provider.dart';
 import '../widgets/estado_badge.dart';
