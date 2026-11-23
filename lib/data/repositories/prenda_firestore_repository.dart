@@ -83,6 +83,22 @@ class PrendaFirestoreRepository implements PrendaRepository {
     await _coleccion.doc(id).delete().timeout(_limite);
   }
 
+  @override
+  Future<void> actualizarVendedor(String vendedorUid, String nombre) async {
+    if (vendedorUid.isEmpty) return;
+    final propias = await _coleccion
+        .where('vendedorUid', isEqualTo: vendedorUid)
+        .get()
+        .timeout(_limite);
+    if (propias.docs.isEmpty) return;
+
+    final lote = _db.batch();
+    for (final doc in propias.docs) {
+      lote.update(doc.reference, {'vendedor': nombre});
+    }
+    await lote.commit().timeout(_limite);
+  }
+
   /// Carga las prendas de ejemplo solo la primera vez (colección nueva).
   Future<void> _cargarEjemplosSiHaceFalta() async {
     final marca = await _marcaSemilla.get().timeout(_limite);

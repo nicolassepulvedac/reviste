@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:go_router/go_router.dart';
 
 import 'screens/checkout_screen.dart';
+import 'screens/configuracion_screen.dart';
 import 'screens/detalle_screen.dart';
 import 'screens/favoritos_screen.dart';
 import 'screens/home_shell.dart';
@@ -77,6 +78,10 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/mis-publicaciones',
       builder: (context, state) => const MisPublicacionesScreen(),
+    ),
+    GoRoute(
+      path: '/configuracion',
+      builder: (context, state) => const ConfiguracionScreen(),
     ),
     GoRoute(
       path: '/favoritos',

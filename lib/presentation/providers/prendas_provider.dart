@@ -51,6 +51,17 @@ class PrendasNotifier extends AsyncNotifier<List<Prenda>> {
     ref.read(carritoProvider.notifier).quitar(id);
   }
 
+  /// Cambia el nombre del vendedor en las prendas de una cuenta (cuando la
+  /// persona cambia su nombre).
+  Future<void> renombrarVendedor(String uid, String nombre) async {
+    await future; // espera a que termine de cargar la lista
+    await _repo.actualizarVendedor(uid, nombre);
+    state = AsyncData([
+      for (final p in _actuales)
+        if (p.vendedorUid == uid) p.copyWith(vendedor: nombre) else p,
+    ]);
+  }
+
   /// Descuenta el stock de lo comprado.
   Future<void> comprar(List<CarritoItem> items) async {
     final cantidades = {for (final i in items) i.prenda.id: i.cantidad};

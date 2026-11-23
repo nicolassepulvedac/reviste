@@ -12,6 +12,14 @@ class UsuarioRepository {
 
   final FirebaseFirestore _db;
 
+  /// Guarda el nombre nuevo en el perfil de la cuenta (`usuarios/{uid}`).
+  Future<void> actualizarNombre(String uid, String nombre) async {
+    await _db
+        .collection('usuarios')
+        .doc(uid)
+        .update({'nombre': nombre}).timeout(const Duration(seconds: 15));
+  }
+
   /// Rol de la cuenta, actualizado en vivo. Si la cuenta aún no tiene
   /// documento (primer ingreso) se crea con el rol de usuario.
   Stream<String> observarRol({

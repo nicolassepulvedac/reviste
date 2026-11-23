@@ -34,6 +34,11 @@ class _PublicarScreenState extends ConsumerState<PublicarScreen> {
 
   String _categoria = kCategorias.first;
   String _estado = kEstados.first;
+  // Talla elegida en el desplegable (null = aún sin elegir). Con "Otra…" la
+  // talla se escribe en el campo _talla.
+  String? _tallaSel;
+  // Cambia al limpiar el formulario para que el desplegable parta vacío.
+  int _claveTalla = 0;
   Prenda? _editando;
   bool _guardando = false;
   // Id de la prenda nueva: se reutiliza si hay que reintentar (sin internet),
@@ -52,13 +57,27 @@ class _PublicarScreenState extends ConsumerState<PublicarScreen> {
         _titulo.text = prenda.nombre;
         _descripcion.text = prenda.descripcion;
         _precio.text = prenda.precio.toString();
-        _talla.text = prenda.talla;
+        _cargarTalla(prenda.talla);
         _marca.text = prenda.marca == 'Sin marca' ? '' : prenda.marca;
         _stock.text = prenda.stock.toString();
         _imagen.text = prenda.imagenUrl;
         _categoria = prenda.categoria;
         _estado = prenda.estado;
       }
+    }
+  }
+
+  /// Al editar: si la talla está en la lista se elige ahí (sin importar
+  /// mayúsculas), y si no (por ejemplo "32") se usa "Otra…".
+  void _cargarTalla(String talla) {
+    final conocida = kTallas
+        .where((t) => t.toLowerCase() == talla.trim().toLowerCase())
+        .firstOrNull;
+    if (conocida != null) {
+      _tallaSel = conocida;
+    } else {
+      _tallaSel = kTallaOtra;
+      _talla.text = talla;
     }
   }
 
@@ -86,6 +105,8 @@ class _PublicarScreenState extends ConsumerState<PublicarScreen> {
     setState(() {
       _categoria = kCategorias.first;
       _estado = kEstados.first;
+      _tallaSel = null;
+      _claveTalla++;
     });
   }
 
@@ -101,7 +122,7 @@ class _PublicarScreenState extends ConsumerState<PublicarScreen> {
       id: base?.id ?? (_idNuevo ??= DateTime.now().microsecondsSinceEpoch.toString()),
       nombre: _titulo.text.trim(),
       precio: int.parse(_precio.text.trim()),
-      talla: _talla.text.trim(),
+      talla: _tallaSel == kTallaOtra ? _talla.text.trim() : _tallaSel!,
       categoria: _categoria,
       estado: _estado,
       stock: int.parse(_stock.text.trim()),
@@ -209,16 +230,33 @@ class _PublicarScreenState extends ConsumerState<PublicarScreen> {
                         ),
                         const SizedBox(width: 12),
                         Expanded(
-                          child: TextFormField(
-                            controller: _talla,
+                          child: DropdownButtonFormField<String>(
+                            key: ValueKey('talla-$_claveTalla'),
+                            initialValue: _tallaSel,
+                            isExpanded: true,
                             decoration: campoDeco('Talla'),
-                            validator: (v) => (v == null || v.trim().isEmpty)
-                                ? 'Ingresa la talla'
-                                : null,
+                            items: [
+                              for (final t in [...kTallas, kTallaOtra])
+                                DropdownMenuItem(value: t, child: Text(t)),
+                            ],
+                            validator: (v) => v == null ? 'Elige la talla' : null,
+                            onChanged: (valor) =>
+                                setState(() => _tallaSel = valor),
                           ),
                         ),
                       ],
                     ),
+                    if (_tallaSel == kTallaOtra) ...[
+                      const SizedBox(height: 12),
+                      TextFormField(
+                        controller: _talla,
+                        inputFormatters: [LengthLimitingTextInputFormatter(10)],
+                        decoration: campoDeco('Escribe la talla'),
+                        validator: (v) => (v == null || v.trim().isEmpty)
+                            ? 'Ingresa la talla'
+                            : null,
+                      ),
+                    ],
                     const SizedBox(height: 12),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,

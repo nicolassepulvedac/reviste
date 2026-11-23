@@ -9,4 +9,7 @@ abstract class PrendaRepository {
   Future<Prenda> crearPrenda(Prenda prenda);
   Future<void> actualizarPrenda(Prenda prenda);
   Future<void> eliminarPrenda(String id);
+
+  /// Cambia el nombre del vendedor en todas las prendas de esa cuenta.
+  Future<void> actualizarVendedor(String vendedorUid, String nombre);
 }

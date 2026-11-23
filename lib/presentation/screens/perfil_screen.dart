@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../core/theme.dart';
-import '../../core/ui.dart';
 import '../providers/auth_provider.dart';
 import '../providers/carrito_provider.dart';
 import '../providers/favoritos_provider.dart';
@@ -153,7 +152,7 @@ class PerfilScreen extends ConsumerWidget {
                 icono: Icons.settings_outlined,
                 titulo: 'Configuración',
                 subtitulo: 'Ajustes de cuenta',
-                onTap: () => mostrarMensaje(context, 'Próximamente'),
+                onTap: () => context.push('/configuracion'),
               ),
               _OpcionMenu(
                 icono: Icons.logout,

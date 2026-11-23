@@ -32,6 +32,30 @@ class AuthService {
   }
 
   Future<void> cerrarSesion() => _auth.signOut();
+
+  /// Cambia el nombre que se muestra de la cuenta.
+  Future<void> cambiarNombre(String nombre) async {
+    final usuario = _auth.currentUser;
+    await usuario?.updateDisplayName(nombre.trim());
+    await usuario?.reload();
+  }
+
+  /// Cambia la contraseña. Firebase exige confirmar la identidad, por eso
+  /// primero se vuelve a validar la contraseña actual.
+  Future<void> cambiarClave({
+    required String actual,
+    required String nueva,
+  }) async {
+    final usuario = _auth.currentUser;
+    final correo = usuario?.email;
+    if (usuario == null || correo == null) {
+      throw FirebaseAuthException(code: 'user-not-found');
+    }
+    await usuario.reauthenticateWithCredential(
+      EmailAuthProvider.credential(email: correo, password: actual),
+    );
+    await usuario.updatePassword(nueva);
+  }
 }
 
 /// Traduce los errores de Firebase Auth a mensajes en español.

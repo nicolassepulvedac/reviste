@@ -31,6 +31,16 @@ class PrendaLocalRepository implements PrendaRepository {
   Future<void> eliminarPrenda(String id) async {
     _prendas.removeWhere((p) => p.id == id);
   }
+
+  @override
+  Future<void> actualizarVendedor(String vendedorUid, String nombre) async {
+    if (vendedorUid.isEmpty) return;
+    for (var i = 0; i < _prendas.length; i++) {
+      if (_prendas[i].vendedorUid == vendedorUid) {
+        _prendas[i] = _prendas[i].copyWith(vendedor: nombre);
+      }
+    }
+  }
 }
 
 /// Prendas de ejemplo (también se usan para cargar Firestore la primera vez).

@@ -16,8 +16,9 @@ carrito. Un administrador puede revisar y moderar todas las publicaciones.
   en el teléfono (`shared_preferences`).
 - Checkout con formulario validado y descuento de stock al comprar.
 - Historial de compras ("Mis compras") guardado en Firestore por cuenta.
+- Configuración de cuenta: ver datos, cambiar el nombre (se actualiza en la cuenta, el perfil y las prendas publicadas) y cambiar la contraseña.
 - Favoritos con pantalla propia, guardados en la cuenta (`usuarios/{uid}.favoritos`).
-- Publicar, editar y eliminar prendas propias (CRUD sobre Cloud Firestore).
+- Publicar, editar y eliminar prendas propias (CRUD sobre Cloud Firestore), con selector de talla (XS a XXL, Única u otra).
 - Roles: **usuario** (gestiona solo lo suyo) y **administrador** (gestiona todo).
 - Estados de carga, error con "Reintentar" y pantallas vacías.
 
@@ -83,5 +84,6 @@ repositorio, la serialización de la entidad, la compra, el historial de pedidos
 | v0.5 | Roles de administrador y usuario, reglas de Firestore |
 | v0.6 | Pruebas, README y pulido |
 | v0.7 | Historial "Mis compras" (colección `pedidos`) y favoritos guardados en la cuenta |
+| v0.8 | Configuración de cuenta (cambiar nombre y contraseña) |
 
 Las capturas de cada versión están en `docs/`.
