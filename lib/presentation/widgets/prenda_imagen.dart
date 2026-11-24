@@ -29,26 +29,29 @@ class PrendaImagen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final tieneUrl = url.trim().isNotEmpty;
+    // Las fotos que vienen dentro de la app (carpeta assets/images).
+    final esDelProyecto = url.trim().startsWith('assets/');
     return ClipRRect(
       borderRadius: BorderRadius.circular(radio),
       child: Container(
         height: height,
         width: width ?? double.infinity,
         color: kGrisFondo,
-        child: tieneUrl
+        child: esDelProyecto
+            ? Image.asset(
+                url.trim(),
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stack) => _placeholder(),
+              )
+            : tieneUrl
             ? Image.network(
                 url.trim(),
                 fit: BoxFit.cover,
                 errorBuilder: (context, error, stack) => _placeholder(),
+                // Mientras llega la foto se ve el recuadro de siempre.
                 loadingBuilder: (context, child, progreso) {
                   if (progreso == null) return child;
-                  return const Center(
-                    child: SizedBox(
-                      width: 22,
-                      height: 22,
-                      child: CircularProgressIndicator(strokeWidth: 2),
-                    ),
-                  );
+                  return _placeholder();
                 },
               )
             : _placeholder(),

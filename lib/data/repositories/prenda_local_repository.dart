@@ -53,7 +53,7 @@ const List<Prenda> prendasEjemplo = [
     categoria: 'Hombre',
     estado: 'Excelente',
     stock: 1,
-    imagenUrl: '',
+    imagenUrl: 'https://images.unsplash.com/photo-1727515546577-f7d82a47b51d?auto=format&fit=crop&w=600&q=70',
     descripcion:
         'Espectacular chaqueta de cuero genuino, súper suave al tacto y con forro abrigado. Sin detalles de uso, prácticamente nueva. El color es un café hermoso, ideal para cualquier look vintage.',
     marca: "Levi's Colección",
@@ -67,7 +67,7 @@ const List<Prenda> prendasEjemplo = [
     categoria: 'Mujer',
     estado: 'Bueno',
     stock: 1,
-    imagenUrl: '',
+    imagenUrl: 'assets/images/chaleco_lana.jpg',
     descripcion:
         'Chaleco tejido a mano en lana gruesa, muy calentito. Tiene un par de bolitas mínimas por el uso, pero queda perfecto sobre una polera o camisa.',
     marca: 'Artesanal',
@@ -81,7 +81,7 @@ const List<Prenda> prendasEjemplo = [
     categoria: 'Hombre',
     estado: 'Aceptable',
     stock: 1,
-    imagenUrl: '',
+    imagenUrl: 'https://images.unsplash.com/photo-1624378440847-4a64ee1a889d?auto=format&fit=crop&w=600&q=70',
     descripcion:
         'Jeans de corte clásico y recto, tela resistente. Tienen desgaste natural en las rodillas y el dobladillo, justo el look retro que buscas.',
     marca: "Levi's",
@@ -95,7 +95,7 @@ const List<Prenda> prendasEjemplo = [
     categoria: 'Accesorios',
     estado: 'Excelente',
     stock: 1,
-    imagenUrl: '',
+    imagenUrl: 'https://images.unsplash.com/photo-1681334921874-5bafe8acf433?auto=format&fit=crop&w=600&q=70',
     descripcion:
         'Mochila resistente con varios compartimentos y espacio para notebook. Cierres y correas en perfecto estado.',
     marca: 'Sin marca',
@@ -109,7 +109,7 @@ const List<Prenda> prendasEjemplo = [
     categoria: 'Mujer',
     estado: 'Excelente',
     stock: 1,
-    imagenUrl: '',
+    imagenUrl: 'assets/images/vestido_floral.jpg',
     descripcion:
         'Vestido liviano con estampado floral, ideal para días de calor. Usado solo una vez, sin manchas ni arreglos.',
     marca: 'Sin marca',
@@ -123,7 +123,7 @@ const List<Prenda> prendasEjemplo = [
     categoria: 'Mujer',
     estado: 'Bueno',
     stock: 3,
-    imagenUrl: '',
+    imagenUrl: 'https://images.unsplash.com/photo-1564859228273-274232fdb516?auto=format&fit=crop&w=600&q=70',
     descripcion:
         'Polera básica de algodón suave, en buen estado. Hay tres unidades disponibles en la misma talla.',
     marca: 'Sin marca',
@@ -137,7 +137,7 @@ const List<Prenda> prendasEjemplo = [
     categoria: 'Hombre',
     estado: 'Bueno',
     stock: 1,
-    imagenUrl: '',
+    imagenUrl: 'https://images.unsplash.com/photo-1547053295-bb530ab5af2c?auto=format&fit=crop&w=600&q=70',
     descripcion:
         'Zapatillas cómodas para el día a día, suela con buen agarre. Limpias y listas para usar.',
     marca: 'Sin marca',
@@ -151,7 +151,7 @@ const List<Prenda> prendasEjemplo = [
     categoria: 'Accesorios',
     estado: 'Excelente',
     stock: 1,
-    imagenUrl: '',
+    imagenUrl: 'assets/images/bufanda_lana.jpg',
     descripcion: 'Bufanda larga y abrigadora en tonos grises. Como nueva.',
     marca: 'Sin marca',
     vendedor: 'Javiera Muñoz',
@@ -164,7 +164,7 @@ const List<Prenda> prendasEjemplo = [
     categoria: 'Hombre',
     estado: 'Excelente',
     stock: 1,
-    imagenUrl: '',
+    imagenUrl: 'https://images.unsplash.com/photo-1602810318660-d2c46b750f88?auto=format&fit=crop&w=600&q=70',
     descripcion:
         'Camisa de lino fresca y ligera, perfecta para el verano. Sin detalles.',
     marca: 'Sin marca',
@@ -178,7 +178,7 @@ const List<Prenda> prendasEjemplo = [
     categoria: 'Mujer',
     estado: 'Bueno',
     stock: 1,
-    imagenUrl: '',
+    imagenUrl: 'assets/images/falda_plisada.jpg',
     descripcion:
         'Falda plisada midi con cintura elástica. Muy cómoda y fácil de combinar.',
     marca: 'Sin marca',
@@ -192,7 +192,7 @@ const List<Prenda> prendasEjemplo = [
     categoria: 'Accesorios',
     estado: 'Aceptable',
     stock: 2,
-    imagenUrl: '',
+    imagenUrl: 'https://images.unsplash.com/photo-1667284152843-024e91829ad3?auto=format&fit=crop&w=600&q=70',
     descripcion:
         'Cinturón de cuero con hebilla metálica. Marcas de uso normales. Hay dos unidades.',
     marca: 'Sin marca',
@@ -206,10 +206,22 @@ const List<Prenda> prendasEjemplo = [
     categoria: 'Hombre',
     estado: 'Bueno',
     stock: 1,
-    imagenUrl: '',
+    imagenUrl: 'https://images.unsplash.com/photo-1593979189584-cb269cecc9ad?auto=format&fit=crop&w=600&q=70',
     descripcion:
         'Polerón con capucha y bolsillo canguro, interior afelpado. Muy abrigado.',
     marca: 'Sin marca',
     vendedor: 'Camila Rojas',
   ),
 ];
+
+/// Las prendas de ejemplo que se guardaron en Firestore antes de tener fotos
+/// quedaron sin imagen. Aquí se les pone la foto de ejemplo (solo a las que no
+/// tienen dueña ni foto), así se ven bien sin tener que editarlas una por una.
+Prenda conFotoDeEjemplo(Prenda prenda) {
+  if (prenda.imagenUrl.isNotEmpty || prenda.vendedorUid.isNotEmpty) {
+    return prenda;
+  }
+  final ejemplo = prendasEjemplo.where((e) => e.id == prenda.id).firstOrNull;
+  if (ejemplo == null) return prenda;
+  return prenda.copyWith(imagenUrl: ejemplo.imagenUrl);
+}

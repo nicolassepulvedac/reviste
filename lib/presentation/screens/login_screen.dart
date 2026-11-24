@@ -6,6 +6,7 @@ import '../../core/theme.dart';
 import '../../core/ui.dart';
 import '../../data/services/auth_service.dart';
 import '../providers/auth_provider.dart';
+import '../widgets/logo_reviste.dart';
 
 /// Inicio de sesión con correo y contraseña (Firebase Auth).
 class LoginScreen extends ConsumerStatefulWidget {
@@ -62,7 +63,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 mainAxisSize: MainAxisSize.min,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Icon(Icons.recycling, size: 52, color: kVerde),
+                  const Center(child: LogoReViste(size: 76)),
                   const SizedBox(height: 12),
                   const Text(
                     'ReViste',

@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 import '../../domain/entities/prenda.dart';
-import 'prenda_local_repository.dart' show prendasEjemplo;
+import 'prenda_local_repository.dart' show conFotoDeEjemplo, prendasEjemplo;
 import 'prenda_repository.dart';
 
 /// Implementación con Cloud Firestore (colección `prendas`).
@@ -37,7 +37,7 @@ class PrendaFirestoreRepository implements PrendaRepository {
   }
 
   Prenda _aPrenda(QueryDocumentSnapshot<Map<String, dynamic>> doc) {
-    return Prenda.fromMap({...doc.data(), 'id': doc.id});
+    return conFotoDeEjemplo(Prenda.fromMap({...doc.data(), 'id': doc.id}));
   }
 
   @override

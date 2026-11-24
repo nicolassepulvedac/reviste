@@ -85,5 +85,20 @@ repositorio, la serialización de la entidad, la compra, el historial de pedidos
 | v0.6 | Pruebas, README y pulido |
 | v0.7 | Historial "Mis compras" (colección `pedidos`) y favoritos guardados en la cuenta |
 | v0.8 | Configuración de cuenta (cambiar nombre y contraseña) |
+| v0.9 | Ícono propio, nombre "ReViste", logo en login y registro y fotos en las prendas de ejemplo |
 
 Las capturas de cada versión están en `docs/`.
+
+## Créditos de imágenes
+
+Las fotos de la mayoría de las prendas de ejemplo son de [Unsplash](https://unsplash.com)
+y se usan bajo la [Licencia de Unsplash](https://unsplash.com/license).
+Fotógrafos: Anna Evans, Matthew Moloney, Erik Mclean, Sincerely Media,
+Richard Ciraulo, Nimble Made, Vetrivel Viswanathar y Jonah De Oliveira.
+
+Las fotos del chaleco, el vestido, la bufanda y la falda están en
+`assets/images` y son fotos de publicaciones de ropa de segunda mano,
+usadas solo con fines académicos en este proyecto.
+
+El ícono y el logo de la app son un diseño propio. Los demás íconos son de
+Material Icons (Apache 2.0).

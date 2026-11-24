@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 
 import '../../core/theme.dart';
 import '../providers/prendas_provider.dart';
+import '../widgets/logo_reviste.dart';
 
 /// Pantalla de carga inicial: espera las prendas y entra a la app.
 class SplashScreen extends ConsumerStatefulWidget {
@@ -40,7 +41,7 @@ class _SplashScreenState extends ConsumerState<SplashScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(Icons.recycling, size: 56, color: kVerde),
+            LogoReViste(size: 88),
             SizedBox(height: 16),
             Text(
               'ReViste',
